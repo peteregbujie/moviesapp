@@ -1,8 +1,8 @@
 
 'use client'
 import { useDebouncedCallback } from 'use-debounce';
-import { useMovieParams } from '../lib/hooks/useMovieParams';
-import SearchInput from './SearchInput';
+import SearchInput from '../common/SearchInput';
+import { useMovieParams } from '../../hooks/useMovieParams';
 
 export default function Navbar() {
   const { search, setSearch, isPending } = useMovieParams();
