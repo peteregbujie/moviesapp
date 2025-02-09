@@ -14,12 +14,12 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>     
+      <Router>         
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/movie/:id" element={<MovieDetails />} />
             <Route path="/search" element={<SearchResults />} />
-          </Routes>   
+          </Routes>             
       </Router>
       <ReactQueryDevtools />
     </QueryClientProvider>
