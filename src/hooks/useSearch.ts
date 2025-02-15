@@ -1,8 +1,8 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { Movie } from '../types/movie.types';
+import { MovieResponse } from '../types/movie.types';
 import { movieService } from '../services/movieservices';
 
-export const useSearch = (query: string): UseQueryResult<Movie[], Error> => {
+export const useSearch = (query: string): UseQueryResult<MovieResponse, Error> => {
   return useQuery({
     queryKey: ['search', query],
     queryFn: async () => {
