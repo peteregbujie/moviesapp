@@ -9,6 +9,20 @@ export interface Movie {
  genre_ids: number[];
 }
 
+export interface MovieDetails extends Movie {
+ genres: Genre[];
+ runtime: number;
+ status: string;
+ tagline: string;
+ budget: number;
+ revenue: number;
+ production_companies: {
+  id: number;
+  name: string;
+  logo_path: string | null;
+ }[];
+}
+
 export interface Genre {
  id: number;
  name: string;
