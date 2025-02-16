@@ -6,9 +6,11 @@ export const useSearch = (query: string): UseQueryResult<MovieResponse, Error> =
   return useQuery({
     queryKey: ['search', query],
     queryFn: async () => {
+      if (!query.trim()) return { results: [] };
       const response = await movieService.searchMovies(query);
-      return response.data.results;
+      return response.data;
     },
-    enabled: !!query,
+    enabled: !!query.trim(),
+    retry: 1,
   });
 };
