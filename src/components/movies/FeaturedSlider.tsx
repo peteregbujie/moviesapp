@@ -1,14 +1,20 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Movie } from "../../types/movie.types";
 
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';
 
 const FeaturedSlider = ({ movies }: { movies: Movie[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % movies.length);
   const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + movies.length) % movies.length);
+
+  const handleWatchNow = () => {
+    navigate(`/movie/${movies[currentIndex].id}`);
+  };
 
   return (
     <div className="relative h-96 overflow-hidden bg-gray-900">
@@ -26,7 +32,10 @@ const FeaturedSlider = ({ movies }: { movies: Movie[] }) => {
             <div className="p-8 max-w-2xl">
               <h2 className="text-4xl font-bold text-white mb-4">{movies[currentIndex].title}</h2>
               <p className="text-gray-200 mb-6">{movies[currentIndex].overview}</p>
-              <button className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
+              <button 
+                onClick={handleWatchNow}
+                className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
+              >
                 Watch Now
               </button>
             </div>
