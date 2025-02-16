@@ -1,32 +1,40 @@
 
 'use client'
+import { useNavigate } from 'react-router-dom';
 import { useDebouncedCallback } from 'use-debounce';
 import SearchInput from '../common/SearchInput';
 import { useMovieParams } from '../../hooks/useMovieParams';
 
 export default function Navbar() {
   const { search, setSearch, isPending } = useMovieParams();
+  const navigate = useNavigate();
 
-  const handleSearch = useDebouncedCallback(
-    (search: string) => {
-      setSearch(search);
-    },
-    250
-  )
+  const handleSearch = useDebouncedCallback((searchTerm: string) => {
+    setSearch(searchTerm);
+    if (searchTerm.trim()) {
+      navigate(`/search?search=${encodeURIComponent(searchTerm.trim())}`);
+    } else {
+      navigate('/');
+    }
+  }, 250);
 
  return (
    <nav className="bg-white shadow">
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        <div className="flex items-center justify-between h-16">
          <div className="flex-shrink-0">
-           <span className="text-xl font-bold text-gray-800">Logo</span>
+           <span className="text-xl font-bold text-gray-800">Movies App</span>
          </div>
          
          <div className="flex-1 flex items-center justify-center px-6">
-           <SearchInput  value={search} handleSearch={handleSearch} isPending={isPending} />
+           <SearchInput 
+             value={search} 
+             handleSearch={handleSearch} 
+             isPending={isPending} 
+           />
          </div>
          
-         <div className="flex items-center space-x-4">
+         {/* <div className="flex items-center space-x-4">
            <button className="text-gray-600 hover:text-gray-800">
              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path
@@ -47,7 +55,7 @@ export default function Navbar() {
                />
              </svg>
            </button>
-         </div>
+         </div> */}
        </div>
      </div>
    </nav>
