@@ -1,19 +1,20 @@
 import { MovieResponse, GenreResponse } from '../types/movie.types';
 import { tmdbApi } from './api';
+import { AxiosResponse } from 'axios';
 
 export const movieService = {
-  getFeatured: () => 
+  getFeatured: (): Promise<AxiosResponse<MovieResponse>> => 
     tmdbApi.get<MovieResponse>('/movie/now_playing'),
   
-  getTrending: () => 
+  getTrending: (): Promise<AxiosResponse<MovieResponse>> => 
     tmdbApi.get<MovieResponse>('/trending/movie/week'),
   
-  getPopular: () => 
+  getPopular: (): Promise<AxiosResponse<MovieResponse>> => 
     tmdbApi.get<MovieResponse>('/movie/popular'),
   
-  getGenres: () => 
+  getGenres: (): Promise<AxiosResponse<GenreResponse>> => 
     tmdbApi.get<GenreResponse>('/genre/movie/list'),
   
-  searchMovies: (query: string) => 
+  searchMovies: (query: string): Promise<AxiosResponse<MovieResponse>> => 
     tmdbApi.get<MovieResponse>('/search/movie', { params: { query } }),
 };
