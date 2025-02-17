@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import { useMovies } from '../hooks/useMovies';
+import { useGenres } from '../hooks/useGenres';
 import FeaturedSlider from '../components/movies/FeaturedSlider';
 import MovieGrid from '../components/movies/MovieGrid';
+import GenreSelector from '../components/movies/GenreSelector';
 
 const Home = () => {
+  const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
+  
+  const { data: genres, isLoading: genresLoading } = useGenres();
   const { data: featuredMovies, isLoading: featuredLoading, error: featuredError } = useMovies('featured');
   const { data: trendingMovies, isLoading: trendingLoading, error: trendingError } = useMovies('trending');
   const { data: popularMovies, isLoading: popularLoading, error: popularError } = useMovies('popular');
@@ -18,7 +24,7 @@ const Home = () => {
     );
   }
 
-  if (featuredLoading || trendingLoading || popularLoading) {
+  if (featuredLoading || trendingLoading || popularLoading || genresLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="animate-pulse space-y-8">
@@ -37,18 +43,37 @@ const Home = () => {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100">
+    <main className="min-h-screen bg-gray-900">
       {featuredMovies && <FeaturedSlider movies={featuredMovies} />}
       
       <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Genre Selector */}
+        {genres && (
+          <GenreSelector
+            genres={genres}
+            selectedGenreId={selectedGenreId}
+            onGenreSelect={setSelectedGenreId}
+          />
+        )}
+
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Trending Movies</h2>
-          {trendingMovies && <MovieGrid movies={trendingMovies} />}
+          <h2 className="text-2xl font-bold text-white mb-4">Trending Movies</h2>
+          {trendingMovies && (
+            <MovieGrid 
+              movies={trendingMovies} 
+              selectedGenreId={selectedGenreId}
+            />
+          )}
         </section>
 
         <section>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Popular Movies</h2>
-          {popularMovies && <MovieGrid movies={popularMovies} />}
+          <h2 className="text-2xl font-bold text-white mb-4">Popular Movies</h2>
+          {popularMovies && (
+            <MovieGrid 
+              movies={popularMovies} 
+              selectedGenreId={selectedGenreId}
+            />
+          )}
         </section>
       </div>
     </main>
