@@ -1,4 +1,4 @@
-import { MovieResponse, GenreResponse, MovieDetails } from '../types/movie.types';
+import { MovieResponse, GenreResponse, MovieDetails, MovieCredits } from '../types/movie.types';
 import { tmdbApi } from './api';
 import { AxiosResponse } from 'axios';
 
@@ -27,4 +27,7 @@ export const movieService = {
 
   getMovieDetails: (movieId: string): Promise<AxiosResponse<MovieDetails>> =>
     tmdbApi.get<MovieDetails>(`/movie/${movieId}`),
+
+  getMovieCredits: (movieId: string): Promise<AxiosResponse<MovieCredits>> =>
+    tmdbApi.get<MovieCredits>(`/movie/${movieId}/credits`),
 };

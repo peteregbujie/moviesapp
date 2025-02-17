@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, Star, Heart } from 'lucide-react';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useMovieDetails } from '../hooks/useMovieDetails';
+import { useMovieCredits } from '../hooks/useMovieCredits';
+import CastCard from '../components/movies/CastCard';
 
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';
 const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -12,6 +14,11 @@ function MovieDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: movie, isLoading, error } = useMovieDetails(id);
+  const { 
+    data: credits, 
+    isLoading: creditsLoading, 
+    error: creditsError 
+  } = useMovieCredits(id);
 
   const handleBack = () => {
     navigate(-1);
@@ -150,35 +157,53 @@ function MovieDetails() {
 
       {/* Additional Movie Details Section */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Production Companies */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Production Companies</h2>
-            <div className="space-y-4">
-              {movie.production_companies.map((company) => (
-                <div key={company.id} className="text-gray-300">
-                  {company.name}
-                </div>
-              ))}
+        {/* Cast Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-semibold text-white mb-6">Top Cast</h2>
+          {creditsLoading ? (
+            <div className="flex justify-center">
+              <LoadingSpinner />
             </div>
-          </div>
+          ) : creditsError ? (
+            <div className="text-red-500">Error loading cast information</div>
+          ) : credits?.cast && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {credits.cast
+                .slice(0, 12) // Show only top 12 cast members
+                .map((castMember) => (
+                  <CastCard key={castMember.id} cast={castMember} />
+                ))}
+            </div>
+          )}
+        </div>
 
-          {/* Movie Stats */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Movie Stats</h2>
-            <div className="space-y-4 text-gray-300">
-              <div>
-                <span className="text-gray-400">Status: </span>
-                {movie.status}
+        {/* Production Companies */}
+        <div className="bg-gray-800 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Production Companies</h2>
+          <div className="space-y-4">
+            {movie.production_companies.map((company) => (
+              <div key={company.id} className="text-gray-300">
+                {company.name}
               </div>
-              <div>
-                <span className="text-gray-400">Budget: </span>
-                ${movie.budget.toLocaleString()}
-              </div>
-              <div>
-                <span className="text-gray-400">Revenue: </span>
-                ${movie.revenue.toLocaleString()}
-              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Movie Stats */}
+        <div className="bg-gray-800 rounded-lg p-6">
+          <h2 className="text-xl font-semibold text-white mb-4">Movie Stats</h2>
+          <div className="space-y-4 text-gray-300">
+            <div>
+              <span className="text-gray-400">Status: </span>
+              {movie.status}
+            </div>
+            <div>
+              <span className="text-gray-400">Budget: </span>
+              ${movie.budget.toLocaleString()}
+            </div>
+            <div>
+              <span className="text-gray-400">Revenue: </span>
+              ${movie.revenue.toLocaleString()}
             </div>
           </div>
         </div>
