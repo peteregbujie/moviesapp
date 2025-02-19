@@ -1,6 +1,6 @@
 
 'use client'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDebouncedCallback } from 'use-debounce';
 import SearchInput from '../common/SearchInput';
 import { useMovieParams } from '../../hooks/useMovieParams';
@@ -23,7 +23,12 @@ export default function Navbar() {
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        <div className="flex items-center justify-between h-16">
          <div className="flex-shrink-0">
-           <span className="text-xl font-bold text-gray-800">Movies App</span>
+           <Link 
+             to="/" 
+             className="text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors"
+           >
+             Movies App
+           </Link>
          </div>
          
          <div className="flex-1 flex items-center justify-center px-6">
