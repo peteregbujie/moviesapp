@@ -30,4 +30,7 @@ export const movieService = {
 
   getMovieCredits: (movieId: string): Promise<AxiosResponse<MovieCredits>> =>
     tmdbApi.get<MovieCredits>(`/movie/${movieId}/credits`),
+
+  getRelatedMovies: (movieId: string): Promise<AxiosResponse<MovieResponse>> =>
+    tmdbApi.get<MovieResponse>(`/movie/${movieId}/similar`),
 };

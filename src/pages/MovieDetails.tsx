@@ -5,7 +5,9 @@ import { ArrowLeft, Clock, Calendar, Star, Heart } from 'lucide-react';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useMovieDetails } from '../hooks/useMovieDetails';
 import { useMovieCredits } from '../hooks/useMovieCredits';
+import { useRelatedMovies } from '../hooks/useRelatedMovies';
 import CastCard from '../components/movies/CastCard';
+import RelatedMovies from '../components/movies/RelatedMovies';
 
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/original';
 const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -19,6 +21,11 @@ function MovieDetails() {
     isLoading: creditsLoading, 
     error: creditsError 
   } = useMovieCredits(id);
+  const {
+    data: relatedMovies,
+    isLoading: relatedLoading,
+    error: relatedError
+  } = useRelatedMovies(id);
 
   const handleBack = () => {
     navigate(-1);
@@ -62,18 +69,18 @@ function MovieDetails() {
       {/* Hero Section with Backdrop */}
       <div className="relative">
         {/* Backdrop Image */}
-        <div className="relative h-[75vh]">
+        <div className="relative h-[80vh]"> {/* Increased height from 75vh to 80vh */}
           <div className="absolute inset-0">
             <img
               src={movie.backdrop_path ? `${BACKDROP_BASE_URL}${movie.backdrop_path}` : '/no-backdrop.png'}
               alt={movie.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top" /* Added object-top */
             />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent" />
           </div>
           
-          {/* Back Button - Moved inside the backdrop container */}
-          <div className="absolute top-4 left-4 z-10">
+          {/* Back Button */}
+          <div className="absolute top-6 left-6 z-10"> {/* Adjusted positioning */}
             <button
               onClick={handleBack}
               className="flex items-center space-x-2 bg-black/50 hover:bg-black/75 text-white px-4 py-2 rounded-lg transition-colors"
@@ -84,7 +91,7 @@ function MovieDetails() {
           </div>
         </div>
 
-        {/* Movie Info Overlay */}
+        {/* Movie Info Overlay - adjusted positioning */}
         <div className="absolute bottom-0 left-0 right-0 px-4 py-8">
           <div className="container mx-auto">
             <div className="flex flex-col md:flex-row gap-8 items-end">
@@ -177,6 +184,16 @@ function MovieDetails() {
           )}
         </div>
 
+         {/* Related Movies Section */}
+         <div className="mb-12">
+          <h2 className="text-2xl font-semibold text-white mb-6">Related Movies</h2>
+          <RelatedMovies 
+            movies={relatedMovies}
+            isLoading={relatedLoading}
+            error={relatedError}
+          />
+        </div>
+
         {/* Production Companies */}
         <div className="bg-gray-800 rounded-lg p-6">
           <h2 className="text-xl font-semibold text-white mb-4">Production Companies</h2>
@@ -207,6 +224,8 @@ function MovieDetails() {
             </div>
           </div>
         </div>
+
+       
       </div>
     </div>
   );
