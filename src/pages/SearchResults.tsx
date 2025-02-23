@@ -39,7 +39,7 @@ export default function SearchResults() {
       {!data?.results?.length ? (
         <p className="text-gray-500">No results found for "{query}"</p>
       ) : (
-        <MovieGrid movies={data.results} />
+        <MovieGrid movies={data.results} selectedGenreId={null} />
       )}
     </div>
   );
