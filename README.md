@@ -2,7 +2,7 @@
 
 A modern, responsive movie browsing application built with React, TypeScript, and Tailwind CSS. This application uses The Movie Database (TMDB) API to provide users with an engaging interface to discover and explore movies.
 
-![React Movies App Screenshot]
+
 ![Home Page](screenshots/homepage.png)
 
 
